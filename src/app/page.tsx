@@ -5,8 +5,6 @@ import Image from "next/image";
 import { useEffect, useState, ChangeEvent, useMemo } from "react";
 import Avatar from "./Avatar/Avatar";
 
-const { ethereum } = window;
-
 export default function Home() {
     const [ethPrice, setEthPrice] = useState(0);
     const [beers, setBeers] = useState("1");
@@ -46,7 +44,6 @@ export default function Home() {
         const count = Number(e.target.value);
         if (count > MAX_COUNT) return;
         if (count < MIN_COUNT) return;
-        console.log(count);
         setBeers(count.toString());
     };
 
@@ -54,10 +51,11 @@ export default function Home() {
         try {
             setError("");
             setTxHash("");
-            const [from] = await ethereum.request({
+            if (window === undefined) return;
+            const [from] = await window.ethereum.request({
                 method: "eth_requestAccounts",
             });
-            const txHash = await ethereum.request({
+            const txHash = await window.ethereum.request({
                 method: "eth_sendTransaction",
                 params: [
                     {
@@ -126,7 +124,7 @@ export default function Home() {
                                 Donate ETH
                             </button>
                             <div className="flex flex-col text-xs absolute mt-2 justify-center w-full">
-                                {!ethereum && (
+                                {typeof window !== "undefined" && !window.ethereum && (
                                     <div className="text-red-700">
                                         <a
                                             target="_blank"

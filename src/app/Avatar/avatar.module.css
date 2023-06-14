@@ -1,0 +1,9 @@
+.outer {
+    transform-style: preserve-3d;
+    perspective: 300px;
+}
+
+.avatar {
+    transform-style: preserve-3d;
+    transition: 0.01s;
+}
